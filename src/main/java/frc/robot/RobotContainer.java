@@ -40,7 +40,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    m_drivetrain.setDefaultCommand(new DriveCommand(m_drivetrain,m_driverController.getRawAxis(0),m_driverController.getRawAxis(1)));
+    m_drivetrain.setDefaultCommand(new DriveCommand(m_drivetrain,() -> m_driverController.getRawAxis(0),() -> m_driverController.getRawAxis(1)));
 //    m_drivetrain.setDefaultCommand(new DriveCommand(m_drivetrain,0.5,0.0));
     SmartDashboard.putNumber("getRawAxis0", m_driverController.getRawAxis(0));
     SmartDashboard.putNumber("getRawAxis1", m_driverController.getRawAxis(1));

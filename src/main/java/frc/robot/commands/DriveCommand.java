@@ -7,16 +7,17 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
 public class DriveCommand extends CommandBase {
   private final DriveTrain m_drivetrain;
-  private final Double m_forward;
-  private final Double m_rotation;
+  private final DoubleSupplier m_forward;
+  private final DoubleSupplier m_rotation;
 
 
-  public DriveCommand(DriveTrain subsystem, Double forward, Double rotation) {
+  public DriveCommand(DriveTrain subsystem, DoubleSupplier forward, DoubleSupplier rotation) {
     m_drivetrain = subsystem;
     m_forward = forward;
     m_rotation = rotation;
@@ -25,6 +26,6 @@ public class DriveCommand extends CommandBase {
 
   @Override
   public void execute() {
-    m_drivetrain.arcadeDrive(m_forward, m_rotation);
+    m_drivetrain.arcadeDrive(m_forward.getAsDouble(), m_rotation.getAsDouble());
   }
 }

@@ -15,6 +15,9 @@ import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -45,7 +48,13 @@ public class RobotContainer {
     SmartDashboard.putNumber("getRawAxis0", m_driverController.getRawAxis(0));
     SmartDashboard.putNumber("getRawAxis1", m_driverController.getRawAxis(1));
   
-
+    // Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
+    CommandScheduler.getInstance().onCommandInitialize(command -> Shuffleboard.addEventMarker(
+        "Command initialized", command.getName(), EventImportance.kNormal));
+    CommandScheduler.getInstance().onCommandInterrupt(command -> Shuffleboard.addEventMarker(
+        "Command interrupted", command.getName(), EventImportance.kNormal));
+    CommandScheduler.getInstance().onCommandFinish(command -> Shuffleboard.addEventMarker(
+        "Command finished", command.getName(), EventImportance.kNormal));
 
   }
 

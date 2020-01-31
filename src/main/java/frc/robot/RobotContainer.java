@@ -14,6 +14,7 @@ import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -29,6 +30,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   private final DriveTrain m_drivetrain = new DriveTrain();
+  private final PIDDriveTrain m_piddrivetrain = new PIDDriveTrain();
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -43,10 +45,11 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    m_drivetrain.setDefaultCommand(new DriveCommand(m_drivetrain,() -> m_driverController.getRawAxis(0),() -> m_driverController.getRawAxis(1)));
+    m_drivetrain.setDefaultCommand(new DriveCommand(m_drivetrain,() -> m_driverController.getRawAxis(Constants.OI_DRIVER_CONTROLLER_X_AXIS),() -> m_driverController.getRawAxis(Constants.OI_DRIVER_CONTROLLER_Y_AXIS)));
 //    m_drivetrain.setDefaultCommand(new DriveCommand(m_drivetrain,0.5,0.0));
-    SmartDashboard.putNumber("getRawAxis0", m_driverController.getRawAxis(0));
-    SmartDashboard.putNumber("getRawAxis1", m_driverController.getRawAxis(1));
+    SmartDashboard.putNumber("CONTROLLER_X_AXIS", m_driverController.getRawAxis(Constants.OI_DRIVER_CONTROLLER_X_AXIS));
+    SmartDashboard.putNumber("CONTROLLER_Y_AXIS", m_driverController.getRawAxis(Constants.OI_DRIVER_CONTROLLER_Y_AXIS));
+    SmartDashboard.putNumber("DRIVE ENCODER ABSOLUTE VALUE",Math.abs(m_drivetrain.getDriveEncoderDistance()));
   
     // Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
     CommandScheduler.getInstance().onCommandInitialize(command -> Shuffleboard.addEventMarker(
@@ -65,6 +68,19 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    JoystickButton readEncoderButton = new JoystickButton(m_driverController, Constants.READ_ENCODER_BUTTON);
+    readEncoderButton.whenPressed(new EncoderCommand(m_drivetrain));
+
+    JoystickButton writeEncoderButton = new JoystickButton(m_driverController, Constants.RESET_ENCODER_BUTTON);
+    writeEncoderButton.whenPressed(new ResetEncoderCommand(m_drivetrain));
+
+    JoystickButton driveShortDistanceButton = new JoystickButton(m_driverController, Constants.DRIVE_SHORT_DISTANCE_BUTTON);
+    driveShortDistanceButton.whenPressed(new DriveShortDistanceCommand(m_drivetrain, () -> m_driverController.getRawAxis(Constants.OI_DRIVER_CONTROLLER_X_AXIS),() -> m_driverController.getRawAxis(Constants.OI_DRIVER_CONTROLLER_Y_AXIS),Constants.SHORT_DISTANCE_TO_DRIVE_IN_FEET));
+
+    JoystickButton drivePIDDistanceButton = new JoystickButton(m_driverController, Constants.DRIVE_PID_DISTANCE_BUTTON);
+    drivePIDDistanceButton.whenPressed(new DrivePIDCommand(m_piddrivetrain, () -> m_driverController.getRawAxis(Constants.OI_DRIVER_CONTROLLER_X_AXIS)));
+
+
   }
 
 

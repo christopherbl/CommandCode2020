@@ -17,10 +17,42 @@ package frc.robot;
  */
 public final class Constants {
 
-    public static final int OI_DRIVER_CONTROLLER = 0;
+	public static final int OI_DRIVER_CONTROLLER = 0;
+	
+	public static final int OI_DRIVER_CONTROLLER_X_AXIS = 1;
+	public static final int OI_DRIVER_CONTROLLER_Y_AXIS = 0;
+
+	public static final int READ_ENCODER_BUTTON = 1;   //xbox button A using button 1 for short distance as only button 1 and 2 work
+	public static final int RESET_ENCODER_BUTTON = 2;  //xbox button B
+	public static final int DRIVE_SHORT_DISTANCE_BUTTON = 3;   //xbox button X
+	public static final int DRIVE_PID_DISTANCE_BUTTON = 4; //xbox button Y
+	public static final int DRIVE_LONG_DISTANCE_BUTTON = 4;  //xbox button Y
 
     public static final int DRIVETRAIN_FRONT_LEFT_TALON = 0;
 	public static final int DRIVETRAIN_REAR_LEFT_TALON = 1;
 	public static final int DRIVETRAIN_FRONT_RIGHT_TALON = 2;
 	public static final int DRIVETRAIN_REAR_RIGHT_TALON = 3;
+
+	public static final int DRIVETRAIN_FRONT_LEFT_TALON_PID = 4;
+	public static final int DRIVETRAIN_REAR_LEFT_TALON_PID = 5;
+	public static final int DRIVETRAIN_FRONT_RIGHT_TALON_PID = 6;
+	public static final int DRIVETRAIN_REAR_RIGHT_TALON_PID = 7;
+
+	public static final int DRIVETRAIN_DRIVE_ENCODER_A = 1;
+	public static final int DRIVETRAIN_DRIVE_ENCODER_B = 2;
+
+	public static final int DRIVETRAIN_DRIVE_ENCODER_A_PID = 3;
+	public static final int DRIVETRAIN_DRIVE_ENCODER_B_PID = 4;
+
+	public static final int DRIVETRAIN_ENCODER_REVS_PER_FOOT = 12;
+
+	public static final double SHORT_DISTANCE_TO_DRIVE_IN_FEET = 350.0;
+
+	public static final double LONG_DISTANCE_TO_DRIVE_IN_FEET = 8000.0;
+
+	public static final double SETPOINT_DRIVE_DISTANCE_PID = 125.0;
+
+	public static final double kDriveP = 1.0;
+	public static final double kDriveI = 1.0;
+	public static final double kDriveD = 1.0;
 }

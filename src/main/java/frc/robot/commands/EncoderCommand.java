@@ -7,33 +7,27 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriveCommand extends CommandBase {
+public class EncoderCommand extends CommandBase {
   private final DriveTrain m_drivetrain;
-  private final DoubleSupplier m_forward;
-  private final DoubleSupplier m_rotation;
 
-
-  public DriveCommand(DriveTrain subsystem, DoubleSupplier forward, DoubleSupplier rotation) {
+  public EncoderCommand(DriveTrain subsystem) {
     m_drivetrain = subsystem;
-    m_forward = forward;
-    m_rotation = rotation;
+
     addRequirements(m_drivetrain);
   }
 
   @Override
   public void execute() {
-    m_drivetrain.arcadeDrive(m_forward.getAsDouble(), m_rotation.getAsDouble());
-    m_drivetrain.increaseDriveEncoderCount(m_forward.getAsDouble());
-    //m_drivetrain.incrementDriveEncoderCount();
+    SmartDashboard.putNumber("ButtonSnapshotdriveEncoderValue", m_drivetrain.getDriveEncoderCount());
   }
 
-    // Returns true when the command should end.
-    @Override
-    public boolean isFinished() {
-      return false;
-    }
+      // Returns true when the command should end.
+      @Override
+      public boolean isFinished() {
+        return true;
+      }
 }

@@ -10,13 +10,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.PIDDriveTrain;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ResetEncoderCommand extends CommandBase {
   private final DriveTrain m_drivetrain;
+  private final PIDDriveTrain m_piddrivetrain;
 
-  public ResetEncoderCommand(DriveTrain subsystem) {
-    m_drivetrain = subsystem;
+  public ResetEncoderCommand(DriveTrain subsystem1, PIDDriveTrain subsystem2) {
+    m_drivetrain = subsystem1;
+    m_piddrivetrain = subsystem2;
 
     addRequirements(m_drivetrain);
   }
@@ -24,6 +27,7 @@ public class ResetEncoderCommand extends CommandBase {
   @Override
   public void execute() {
     m_drivetrain.resetDriveEncoderCount();
+    m_piddrivetrain.resetPIDDriveEncoderCount();
     //SmartDashboard.putNumber("ButtonSnapshotdriveEncoderValue", m_drivetrain.getDriveEncoderDistance());
   }
 

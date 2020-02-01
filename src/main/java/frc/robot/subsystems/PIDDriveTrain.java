@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Encoder;
 
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 
 public class PIDDriveTrain extends PIDSubsystem {
 
@@ -38,7 +39,7 @@ public class PIDDriveTrain extends PIDSubsystem {
 
   //private final DifferentialDrive m_piddrive = new DifferentialDrive(m_pidleft, m_pidright);
   private final Encoder m_driveEncoder = new Encoder(Constants.DRIVETRAIN_DRIVE_ENCODER_A_PID, Constants.DRIVETRAIN_DRIVE_ENCODER_B_PID);
-  double pidEncoderValue = 0.0;
+  double pidEncoderValue;
   private final static double P = -0.009;
   private final static double I = 0.0;
   private final static double D = -0.00;
@@ -49,11 +50,13 @@ public class PIDDriveTrain extends PIDSubsystem {
   private final double kF = .065;
   public final int allowableError = 100;
 
-
+  
   public PIDDriveTrain() {
   super(
          // The PIDController used by the subsystem
-         new PIDController(0.1, 0.0, 0.0));    //10.0 takes 27.7 seconds to converge
+         new PIDController(1.0, 0.0, 0.0));    //10.0 takes 27.7 seconds to converge
+         
+         pidEncoderValue = 0.0;
   }
   
   public void setMotors(final double left, final double right) {

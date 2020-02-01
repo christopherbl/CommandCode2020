@@ -30,11 +30,13 @@ public class DrivePIDCommand extends CommandBase {
     number_calls = 0;
   }
 
-  // Called when the command is initially scheduled.
+
+// Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_piddrivetrain.setSetpoint(-75.0);
     m_piddrivetrain.enable();
+    number_calls = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,7 +47,7 @@ public class DrivePIDCommand extends CommandBase {
     SmartDashboard.putNumber("pidError", m_piddrivetrain.getController().getPositionError());
     SmartDashboard.putNumber("pidSetPoint", m_piddrivetrain.getController().getSetpoint());
     SmartDashboard.putNumber("pidPeriod", m_piddrivetrain.getController().getPeriod());
-    SmartDashboard.putNumber("PID CALLS",number_calls); 
+    SmartDashboard.putNumber("PID NUMBER EXECUTE CALLS",number_calls); 
     number_calls++;
   }
 

@@ -13,11 +13,14 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
@@ -38,6 +41,7 @@ public class RobotContainer {
 
   Joystick m_driverController = new Joystick(Constants.OI_DRIVER_CONTROLLER);
 
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -51,6 +55,10 @@ public class RobotContainer {
     SmartDashboard.putNumber("CONTROLLER_Y_AXIS", m_driverController.getRawAxis(Constants.OI_DRIVER_CONTROLLER_Y_AXIS));
     SmartDashboard.putNumber("DRIVE ENCODER ABSOLUTE VALUE",Math.abs(m_drivetrain.getDriveEncoderDistance()));
   
+//    SmartDashboard.putData(m_piddrivetrain);
+   
+    SmartDashboard.putData("TunePID",m_piddrivetrain.getController());
+
     // Set the scheduler to log Shuffleboard events for command initialize, interrupt, finish
     CommandScheduler.getInstance().onCommandInitialize(command -> Shuffleboard.addEventMarker(
         "Command initialized", command.getName(), EventImportance.kNormal));
@@ -71,8 +79,8 @@ public class RobotContainer {
     JoystickButton readEncoderButton = new JoystickButton(m_driverController, Constants.READ_ENCODER_BUTTON);
     readEncoderButton.whenPressed(new EncoderCommand(m_drivetrain));
 
-    JoystickButton writeEncoderButton = new JoystickButton(m_driverController, Constants.RESET_ENCODER_BUTTON);
-    writeEncoderButton.whenPressed(new ResetEncoderCommand(m_drivetrain));
+    JoystickButton resetEncoderButton = new JoystickButton(m_driverController, Constants.RESET_ENCODER_BUTTON);
+    resetEncoderButton.whenPressed(new ResetEncoderCommand(m_drivetrain,m_piddrivetrain));
 
     JoystickButton driveShortDistanceButton = new JoystickButton(m_driverController, Constants.DRIVE_SHORT_DISTANCE_BUTTON);
     driveShortDistanceButton.whenPressed(new DriveShortDistanceCommand(m_drivetrain, () -> m_driverController.getRawAxis(Constants.OI_DRIVER_CONTROLLER_X_AXIS),() -> m_driverController.getRawAxis(Constants.OI_DRIVER_CONTROLLER_Y_AXIS),Constants.SHORT_DISTANCE_TO_DRIVE_IN_FEET));

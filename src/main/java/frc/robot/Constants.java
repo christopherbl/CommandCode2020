@@ -26,7 +26,7 @@ public final class Constants {
 	public static final int RESET_ENCODER_BUTTON = 2;  //xbox button B
 	public static final int DRIVE_SHORT_DISTANCE_BUTTON = 3;   //xbox button X
 	public static final int DRIVE_PID_DISTANCE_BUTTON = 4; //xbox button Y
-	public static final int DRIVE_LONG_DISTANCE_BUTTON = 4;  //xbox button Y
+	public static final int PID_DRIVE_DISTANCE_BUTTON = 6;  //xbox button right bumper (just beyond Y button on top of controller)
 
     public static final int DRIVETRAIN_FRONT_LEFT_TALON = 0;
 	public static final int DRIVETRAIN_REAR_LEFT_TALON = 1;
@@ -52,7 +52,7 @@ public final class Constants {
 
 	public static final double SETPOINT_DRIVE_DISTANCE_PID = 125.0;
 
-	public static final double kDriveP = 1.0;
-	public static final double kDriveI = 1.0;
-	public static final double kDriveD = 1.0;
+	public static final double PID_DRIVE_P = 1.0;
+	public static final double PID_DRIVE_I = 0.0;
+	public static final double PID_DRIVE_D = 0.0;
 }

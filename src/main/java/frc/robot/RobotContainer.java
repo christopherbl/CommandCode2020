@@ -66,6 +66,8 @@ public class RobotContainer {
         "Command interrupted", command.getName(), EventImportance.kNormal));
     CommandScheduler.getInstance().onCommandFinish(command -> Shuffleboard.addEventMarker(
         "Command finished", command.getName(), EventImportance.kNormal));
+    CommandScheduler.getInstance().onCommandExecute(command -> Shuffleboard.addEventMarker(
+      "Command executed", command.getName(), EventImportance.kNormal));
 
   }
 
@@ -87,7 +89,10 @@ public class RobotContainer {
 
     JoystickButton drivePIDDistanceButton = new JoystickButton(m_driverController, Constants.DRIVE_PID_DISTANCE_BUTTON);
     drivePIDDistanceButton.whenPressed(new DrivePIDCommand(m_piddrivetrain, () -> m_driverController.getRawAxis(Constants.OI_DRIVER_CONTROLLER_X_AXIS)));
+//    drivePIDDistanceButton.whenPressed(new DrivePIDCommand(m_piddrivetrain, () -> m_driverController.getRawAxis(Constants.OI_DRIVER_CONTROLLER_X_AXIS)));
 
+    JoystickButton PIDdriveDistanceButton = new JoystickButton(m_driverController, Constants.PID_DRIVE_DISTANCE_BUTTON);
+    PIDdriveDistanceButton.whenPressed(new PIDDriveCommand(m_piddrivetrain, () -> m_driverController.getRawAxis(Constants.OI_DRIVER_CONTROLLER_X_AXIS)));
 
   }
 

@@ -12,6 +12,8 @@ import frc.robot.subsystems.PIDDriveTrain;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DrivePIDCommand extends CommandBase {
@@ -35,6 +37,7 @@ public class DrivePIDCommand extends CommandBase {
   @Override
   public void initialize() {
     m_piddrivetrain.setSetpoint(-75.0);
+    m_piddrivetrain.resetPIDDriveEncoderCount();
     m_piddrivetrain.enable();
     number_calls = 0;
   }
@@ -47,7 +50,7 @@ public class DrivePIDCommand extends CommandBase {
     SmartDashboard.putNumber("pidError", m_piddrivetrain.getController().getPositionError());
     SmartDashboard.putNumber("pidSetPoint", m_piddrivetrain.getController().getSetpoint());
     SmartDashboard.putNumber("pidPeriod", m_piddrivetrain.getController().getPeriod());
-    SmartDashboard.putNumber("PID NUMBER EXECUTE CALLS",number_calls); 
+    SmartDashboard.putNumber("PID SECS TO CONVERGE",Double.valueOf(number_calls)*.020); 
     number_calls++;
   }
 

@@ -40,21 +40,14 @@ public class PIDDriveTrain extends PIDSubsystem {
   //private final DifferentialDrive m_piddrive = new DifferentialDrive(m_pidleft, m_pidright);
   private final Encoder m_driveEncoder = new Encoder(Constants.DRIVETRAIN_DRIVE_ENCODER_A_PID, Constants.DRIVETRAIN_DRIVE_ENCODER_B_PID);
   double pidEncoderValue;
-  private final static double P = -0.009;
-  private final static double I = 0.0;
-  private final static double D = -0.00;
-  private final static double Tolerance = 6.0f;
-  private final double kP = 0.008;
-  private final double kI = -0.00;
-  private final double kD = 0.0;
-  private final double kF = .065;
+
   public final int allowableError = 100;
 
   
   public PIDDriveTrain() {
   super(
          // The PIDController used by the subsystem
-         new PIDController(1.0, 0.0, 0.0));    //10.0 takes 27.7 seconds to converge
+         new PIDController(Constants.PID_DRIVE_P, Constants.PID_DRIVE_I, Constants.PID_DRIVE_D));   
          
          pidEncoderValue = 0.0;
   }
@@ -65,16 +58,14 @@ public class PIDDriveTrain extends PIDSubsystem {
   }
 
   @Override
-  protected void useOutput(final double output, final double setpoint) {
-    // TODO Auto-generated method stub
+  // changed following useOutput from protected to public so that PIDDriveCommand (different pkg) could reference it
+  public void useOutput(final double output, final double setpoint) {
     setMotors(output,-output);
     this.increasePIDDriveEncoderCount(output);
-
   }
 
   @Override
   protected double getMeasurement() {
-    // TODO Auto-generated method stub
     return pidEncoderValue; //0;
   }
 
@@ -97,9 +88,4 @@ public class PIDDriveTrain extends PIDSubsystem {
 		return (getPIDDriveEncoderCount() / (Constants.DRIVETRAIN_ENCODER_REVS_PER_FOOT)) * 12;
   }
   
-  // @Override
-  // public double getMeasurement() {
-  //   // Return the process variable measurement here
-  //   return 0;
-  // }
 }

@@ -7,10 +7,12 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.PIDDriveTrain;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -18,16 +20,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class PIDDriveCommand extends PIDCommand {
-  private static final double SETPOINT_DISTANCE = 175.0;  // Set reference to target
+  private static final double SETPOINT_DISTANCE = 125.0;  // Set reference to target
   
   /**
    * Creates a new PIDDriveCommand - this is new 2020 approach but could not get dashboard to show anything but
-   * zero setpoint (bug?).
+   * zero setpoint.
    */
-  private final DriveTrain m_drivetrain;
+  private final PIDDriveTrain m_piddrivetrain;
   int number_calls;
+  DoubleSupplier m_forward;
 
-  public PIDDriveCommand(DriveTrain subsystem) {
+  public PIDDriveCommand(PIDDriveTrain subsystem, final DoubleSupplier forward) {
     // super(
     //     // The controller that the command will use
     //     new PIDController(0, 0, 0),
@@ -41,21 +44,31 @@ public class PIDDriveCommand extends PIDCommand {
     //     });
    
     super(
-        new PIDController(Constants.kDriveP,Constants.kDriveI,Constants.kDriveD),
+        new PIDController(Constants.PID_DRIVE_P,Constants.PID_DRIVE_I,Constants.PID_DRIVE_D),
           // Close loop on heading
-        subsystem::getDriveEncoderDistance,
+        subsystem::getPIDDriveEncoderDistance,
         SETPOINT_DISTANCE,
           // Pipe output to move robot
-        output -> subsystem.arcadeDrive(output, 0),
+        output -> subsystem.useOutput(output, 0),
           // Requires the drive subsystem
         subsystem);
 
-        m_drivetrain = subsystem;
+        m_piddrivetrain = subsystem;
         number_calls = 0;
+        m_forward = forward;
+        
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
   }
 
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    m_piddrivetrain.setSetpoint(-75.0);
+    m_piddrivetrain.resetPIDDriveEncoderCount();
+    m_piddrivetrain.enable();
+    number_calls = 0;
+  }
   
   @Override
   public void execute() {
@@ -68,11 +81,19 @@ public class PIDDriveCommand extends PIDCommand {
 
 //    m_drivetrain.increaseDriveEncoderCount(m_forward.getAsDouble());
     //m_drivetrain.incrementDriveEncoderCount();
+
+    m_piddrivetrain.increasePIDDriveEncoderCount(m_forward.getAsDouble());
+    SmartDashboard.putNumber("pidSnapshotdriveEncoderValue", m_piddrivetrain.getPIDDriveEncoderCount());
+    SmartDashboard.putNumber("pidError", m_piddrivetrain.getController().getPositionError());
+    SmartDashboard.putNumber("pidSetPoint", m_piddrivetrain.getController().getSetpoint());
+    SmartDashboard.putNumber("pidPeriod", m_piddrivetrain.getController().getPeriod());
+    SmartDashboard.putNumber("PID SECS TO CONVERGE",Double.valueOf(number_calls)*.020); 
+    number_calls++;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; //getController().atSetpoint();
+    return m_piddrivetrain.getController().atSetpoint();  //return false; //getController().atSetpoint();
   }
 }

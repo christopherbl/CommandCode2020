@@ -43,11 +43,12 @@ public class PIDDriveCommand extends PIDCommand {
     //       // Use the output here
     //     });
    
+    // this is new 2020 PID controller
     super(
         new PIDController(Constants.PID_DRIVE_P,Constants.PID_DRIVE_I,Constants.PID_DRIVE_D),
           // Close loop on heading
         subsystem::getPIDDriveEncoderDistance,
-        SETPOINT_DISTANCE,
+        Constants.PID_SETPOINT_DISTANCE,
           // Pipe output to move robot
         output -> subsystem.useOutput(output, 0),
           // Requires the drive subsystem
@@ -68,6 +69,7 @@ public class PIDDriveCommand extends PIDCommand {
     m_piddrivetrain.resetPIDDriveEncoderCount();
     m_piddrivetrain.enable();
     number_calls = 0;
+    System.out.println("In 2020 PID INIT");      // these go to TERMINAL in VS Code 
   }
   
   @Override
@@ -89,11 +91,16 @@ public class PIDDriveCommand extends PIDCommand {
     SmartDashboard.putNumber("pidPeriod", m_piddrivetrain.getController().getPeriod());
     SmartDashboard.putNumber("PID SECS TO CONVERGE",Double.valueOf(number_calls)*.020); 
     number_calls++;
+    System.out.println("In 2020 PID EXE");    // these go to TERMINAL in VS Code   
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (m_piddrivetrain.getController().atSetpoint()) {
+    System.out.println("In 2020 PID FINISH");     // these go to TERMINAL in VS Code 
+  }
     return m_piddrivetrain.getController().atSetpoint();  //return false; //getController().atSetpoint();
+    
   }
 }

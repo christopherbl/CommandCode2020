@@ -52,6 +52,8 @@ public final class Constants {
 
 	public static final double SETPOINT_DRIVE_DISTANCE_PID = 125.0;
 
+	public static final double PID_SETPOINT_DISTANCE = 100.0;
+
 	public static final double PID_DRIVE_P = 1.0;
 	public static final double PID_DRIVE_I = 0.0;
 	public static final double PID_DRIVE_D = 0.0;

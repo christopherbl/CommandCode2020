@@ -36,7 +36,7 @@ public class DrivePIDCommand extends CommandBase {
 // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_piddrivetrain.setSetpoint(-75.0);
+    m_piddrivetrain.setSetpoint(-750.0);
     m_piddrivetrain.resetPIDDriveEncoderCount();
     m_piddrivetrain.enable();
     number_calls = 0;
